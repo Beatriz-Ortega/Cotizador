@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import Error from './Error'
+import Monto from './Monto'
 import useSelectMonedas from '../hooks/useSelectMonedas'
 import { monedas } from '../data/monedas'
 import { useEffect, useState } from 'react'
@@ -25,12 +26,13 @@ const InputSubmit = styled.input`
 
 `
 
-const Formulario = ({setMonedas}) => {
+const Formulario = ({setMonedas, monto, setMonto}) => {
 
     const [criptos, setCriptos] = useState([]);
     const [error, setError] = useState(false);
     const [moneda, SelectMonedas] = useSelectMonedas('Elige tu moneda', monedas);
     const [criptomoneda, SelectCriptomoneda] = useSelectMonedas('Elige tu criptomoneda', criptos);
+    const [mensaje, setMensaje] = useState('')
 
     useEffect(() => {
         const consultarAPI = async () =>{
@@ -53,14 +55,18 @@ const Formulario = ({setMonedas}) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        if([moneda, criptomoneda].includes('')){
+
+        { !Number(monto) || Number(monto) < 0 ? setMensaje('no es un monto valido') : setMensaje('') }
+
+        if([moneda, criptomoneda, monto].includes('')){
             setError(true);
             return;
         }
         setError(false);
         setMonedas({
             moneda,
-            criptomoneda
+            criptomoneda, 
+            monto
         })
     }
 
@@ -70,7 +76,12 @@ const Formulario = ({setMonedas}) => {
     <form onSubmit={handleSubmit}>
         <SelectMonedas />
         <SelectCriptomoneda />
+        <Monto 
+            monto={monto}
+            setMonto={setMonto}
+        />
         <InputSubmit type="submit" value="Cotizar" />
+        {mensaje && <Error>{mensaje}</Error>}
     </form>
     </>
   )

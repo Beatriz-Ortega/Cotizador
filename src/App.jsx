@@ -4,6 +4,7 @@ import ImagenCripto from './img/imagen-criptos.png'
 import Formulario from './components/Formulario'
 import Resultado from './components/Resultado'
 import Spinner from './components/Spinner'
+import Monto from './components/Monto'
 
 const Contenedor = styled.div`
   max-width: 900px;
@@ -48,6 +49,7 @@ function App() {
   const [monedas, setMonedas] = useState({})
   const [result, setResult] = useState({})
   const [cargando, setCargando] = useState(false)
+  const [monto, setMonto] = useState(1)
 
   useEffect(()=>{
     if(Object.keys(monedas).length>0){
@@ -75,10 +77,13 @@ function App() {
         <Heading>Cotiza criptomonedas al instante</Heading>
         <Formulario 
           setMonedas={setMonedas}
+          monto={monto}
+          setMonto={setMonto}
         />
+       
 
         {cargando && <Spinner />}
-        {result.PRICE && <Resultado result={result}/>}
+        {result.PRICE && <Resultado result={result} monto={monto} setMonto={setMonto}/>}
       </div>
     </Contenedor>
   )

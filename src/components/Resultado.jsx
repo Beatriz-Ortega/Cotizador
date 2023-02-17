@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from '@emotion/styled'
+import Monto from './Monto'
 
 const Contenedor = styled.div`
   color: #FFF;
@@ -28,15 +29,22 @@ const Imagen = styled.img`
   width: 120px;
 `
 
-const Resultado = ({result}) => {
+const Resultado = ({result, monto, setMonto}) => {
   const { PRICE, HIGHDAY, LOWDAY, CHANGEPCT24HOUR, IMAGEURL, LASTUPDATE } = result;
+  const cotiza= result.PRICE;
+  const cotizaFormat= cotiza.replace(/[^0-9\.]+/g,"");
+  const valorCripto=Number(cotizaFormat);
+  const valorCotizar=Number(monto);
+  const respuesta = (valorCotizar/valorCripto).toFixed(6);
+
   return (
     <Contenedor>
       <Imagen src={`https://cryptocompare.com/${IMAGEURL}`} alt="imagen cripto"/>
       <div>
-          <Precio>El precio es de: <span>{PRICE}</span></Precio>
-          <Texto>El precio más alto del día: <span>{HIGHDAY}</span></Texto>
-          <Texto>El precio más bajo del día: <span>{LOWDAY}</span></Texto>
+          <Precio>Monto cotizado: <span>{respuesta}</span></Precio>
+          <Texto>Valor del día: <span>{PRICE}</span></Texto>
+          <Texto>Valor más alto del día: <span>{HIGHDAY}</span></Texto>
+          <Texto>Valor más bajo del día: <span>{LOWDAY}</span></Texto>
           <Texto>Variación últimas 24 horas: <span>{CHANGEPCT24HOUR}</span></Texto>
           <Texto>Última actualización: <span>{LASTUPDATE}</span></Texto>
         </div>

@@ -10,6 +10,7 @@ const Texto = styled.div`
     font-family: 'Lato', sans-serif;
     font-weight: 700px;
     text-align: center;
+    margin-top: 30px;
 `
 
 const Error = ({children}) => {
